@@ -5,16 +5,16 @@ import { useEffect, useState } from "react"
 
 const beats = [
   {
-    alert: "₹1,499 COD came back NDR. Nobody has asked the customer yet.",
-    reply: "I'm calling them now. If they confirm a day, I'll book the reattempt.",
+    alert: "A ₹1,499 cash-on-delivery parcel did not arrive. No one has called the customer.",
+    reply: "I'm calling them now. If another day works, I'll book a second try.",
   },
   {
-    alert: "The customer opted out. This shipment never gets a call.",
-    reply: "Left unresolved. The phone stays down.",
+    alert: "This customer asked us not to call.",
+    reply: "Then I won't call. A person can take the case, and the phone stays quiet.",
   },
   {
-    alert: "They confirmed Thursday. The reattempt is still only simulated.",
-    reply: "Policy passed. The demo carrier accepted it. Nothing real was mutated.",
+    alert: "They said Thursday works.",
+    reply: "I booked another try on the practice carrier. A real shipment is left alone.",
   },
 ]
 
@@ -25,38 +25,33 @@ const STEP_MS = 5200
 const steps = [
   {
     id: "Detect",
-    copy: "A carrier event lands in the journal. The worker wakes without a Run click.",
-    title: "Carrier event",
-    detail: "DEMO1499 is waiting. Nobody has to press Run.",
+    copy: "A parcel did not arrive. The agent notices by itself. You do not press start.",
+    title: "It saw the missed delivery",
+    detail: "Order DEMO1499 is waiting. Closing this page does not pause it.",
   },
   {
     id: "Plan",
-    copy: "Sarvam may only cite evidence already on the case. The phone number is not in the prompt.",
-    title: "What it may decide",
-    detail: "Confirm a day, stay silent, or hand the case to a person.",
+    copy: "It decides from the facts already on the case. While it plans, it cannot see the phone number.",
+    title: "It picks the next step",
+    detail: "Call to find a new day, stay quiet, or hand the case to a person.",
   },
   {
     id: "Call",
-    copy: "Bolna places one call. Cost and transcript come back after the execution completes.",
-    title: "One Bolna call",
-    detail: "The webhook only says the call finished. The recording comes from the execution.",
+    copy: "It places one real phone call with Bolna. When the call ends, it reads what was said and what the call cost.",
+    title: "One real phone call",
+    detail: "A short notice only says the call finished. The words and the cost come from Bolna after that.",
   },
 ]
 
 export function EmberLanding() {
   const [open, setOpen] = useState(false)
-  const [live, setLive] = useState(486)
   const [beat, setBeat] = useState(0)
   const [step, setStep] = useState(0)
   const [spin, setSpin] = useState(0)
 
   useEffect(() => {
-    const liveTimer = setInterval(() => setLive((value) => value + (Math.random() > 0.5 ? 1 : -1)), 1600)
     const beatTimer = setInterval(() => setBeat((value) => (value + 1) % beats.length), 4200)
-    return () => {
-      clearInterval(liveTimer)
-      clearInterval(beatTimer)
-    }
+    return () => clearInterval(beatTimer)
   }, [])
 
   useEffect(() => {
@@ -103,18 +98,15 @@ export function EmberLanding() {
       ) : null}
 
       <section className="ember-hero">
-        <p className="ember-chip">
-          <span className="ember-dot" />
-          NEW: FAILURES WAKE THE OPERATOR
-        </p>
         <h1 className="ember-serif">
-          Every failed delivery,
+          Rescue is an always-on agent
           <br />
-          recovered.
+          for failed deliveries.
         </h1>
+        <p>The courier could not hand the parcel over. You do not open this page and press start. The agent is already running.</p>
         <p>
-          An always-on operator for non-delivery reports: it plans, calls the customer, and only then books the
-          reattempt. Closing this page does not stop it.
+          It phones the customer and asks which day they will be home. The courier is sent again only after they agree.
+          Close the tab. The call still goes out. If they asked not to be called, it never dials.
         </p>
         <Link className="ember-pill" href="/desk">
           Open the desk
@@ -123,8 +115,7 @@ export function EmberLanding() {
           <div className="ember-ridge" />
           <p className="ember-live">
             <span className="ember-dot" />
-            <b>{live}</b>
-            calls live
+            still on
           </p>
           <p className="ember-bubble dark">
             <span />
@@ -138,7 +129,7 @@ export function EmberLanding() {
       </section>
 
       <section className="ember-logos">
-        <p>One merchant on the desk. The worker does not sleep.</p>
+        <p>Bolna places the call. Sarvam does the thinking. The practice carrier never touches a real parcel.</p>
         <div className="ember-marquee">
           {marks.map((mark, index) => (
             <span key={`${mark}-${index}`}>{mark}</span>
@@ -147,8 +138,8 @@ export function EmberLanding() {
       </section>
 
       <section className="ember-section">
-        <p className="ember-kicker">The operator</p>
-        <h2 className="ember-serif">Built for the delivery that did not land.</h2>
+        <p className="ember-kicker">What happens next</p>
+        <h2 className="ember-serif">It notices, decides, then calls.</h2>
       </section>
 
       <section className="ember-section" style={{ paddingTop: 0 }}>
@@ -156,7 +147,7 @@ export function EmberLanding() {
           <div>
             <p className="ember-canvas-name">
               <span className="ember-orb" aria-hidden="true" />
-              Open a case
+              A missed delivery
             </p>
             <ol className="ember-steps">
               {steps.map((item, index) => {
@@ -207,15 +198,15 @@ export function EmberLanding() {
                 {step === 0 ? (
                   <div className="ember-chip-row">
                     <span>DEMO1499</span>
-                    <span>NDR</span>
-                    <span>₹1,499 COD</span>
+                    <span>Not delivered</span>
+                    <span>₹1,499 cash on delivery</span>
                   </div>
                 ) : null}
                 {step === 1 ? (
                   <ul className="ember-rules">
-                    <li>Cite the NDR evidence</li>
-                    <li>Leave the phone out of the prompt</li>
-                    <li>Hand off if the answer is unclear</li>
+                    <li>Use only the facts already on the case</li>
+                    <li>Plan without seeing the phone number</li>
+                    <li>Ask a person if the answer is unclear</li>
                   </ul>
                 ) : null}
                 {step === 2 ? (
@@ -224,7 +215,7 @@ export function EmberLanding() {
                     <span />
                     <span />
                     <span />
-                    <p>Calling · waiting for the execution</p>
+                    <p>Calling, then waiting to hear how it went</p>
                   </div>
                 ) : null}
               </div>
@@ -240,7 +231,7 @@ export function EmberLanding() {
               <div className="ember-avatar">PS</div>
               <div>
                 <b>Priya Shah</b>
-                <small>COD line · inbound · with Rescue</small>
+                <small>Cash on delivery · customer called Rescue</small>
               </div>
             </div>
             <div className="ember-line">
@@ -249,7 +240,7 @@ export function EmberLanding() {
             </div>
             <div className="ember-line">
               <b>RESCUE</b>
-              <p>I can see the failed attempt on DEMO1499. Thursday is open. Should we try again then?</p>
+              <p>I can see yesterday&apos;s missed delivery, order DEMO1499. Thursday is open. Should we try again then?</p>
             </div>
             <div className="ember-line">
               <b>PRIYA</b>
@@ -257,69 +248,69 @@ export function EmberLanding() {
             </div>
             <div className="ember-line">
               <b>RESCUE</b>
-              <p>Booked. This reattempt stays on the demo carrier. It does not touch a real shipment.</p>
+              <p>Booked. This second try is practice only. It does not change a real shipment.</p>
             </div>
           </div>
           <aside className="ember-side">
             <div>
               <small>MEMORY</small>
-              <strong>COD ₹1,499</strong>
-              <p>Contact policy: ok to call</p>
+              <strong>Cash on delivery, ₹1,499</strong>
+              <p>This customer is fine with a phone call</p>
             </div>
             <div>
-              <small>SENTIMENT</small>
-              <strong>Confirmed</strong>
-              <p>Reattempt window: today through three days</p>
+              <small>WHAT THEY SAID</small>
+              <strong>Thursday works</strong>
+              <p>Another try can be today, or any of the next three days</p>
             </div>
           </aside>
         </div>
       </section>
 
       <section className="ember-section">
-        <p className="ember-kicker">No extra click</p>
-        <h2 className="ember-serif">The queue, already moving.</h2>
+        <p className="ember-kicker">You do not start it</p>
+        <h2 className="ember-serif">The missed delivery is enough.</h2>
         <div className="ember-stats" style={{ marginTop: 36 }}>
           <div className="ember-stat">
-            <small>To start a case</small>
+            <small>Buttons you press</small>
             <b>0</b>
-            <span>Run buttons. The event is enough.</span>
+            <span>The failed delivery starts the agent.</span>
           </div>
           <div className="ember-stat">
-            <small>Workers on the lease</small>
+            <small>Agents running</small>
             <b>1</b>
-            <span>Many cases, one resident process.</span>
+            <span>One agent, many parcels, still on if you close the page.</span>
           </div>
           <div className="ember-stat">
-            <small>Real carrier writes</small>
+            <small>Real shipments changed</small>
             <b>0</b>
-            <span>Shiprocket stays read-only.</span>
+            <span>In this demo the second try is practice. Shiprocket is look-only.</span>
           </div>
           <div className="ember-stat">
-            <small>Call before action</small>
+            <small>Phone calls first</small>
             <b>1</b>
-            <span>Bolna finishes, then the reattempt.</span>
+            <span>Bolna finishes the call, then another try gets booked.</span>
           </div>
         </div>
       </section>
 
       <section className="ember-section" style={{ paddingTop: 0 }}>
         <div className="ember-quote">
-          <q>The desk can close. The case stays with the worker until the delivery is verified or a person has to take it.</q>
-          <p>Demo Merchant · the journal</p>
+          <q>Close the page if you want. The agent keeps the parcel until it is delivered, or until a person has to take over.</q>
+          <p>The phone call is real. The second delivery in this demo does not change a real shipment.</p>
         </div>
       </section>
 
       <section className="ember-section ember-cta">
         <div className="ember-cta-card">
-          <p className="ember-kicker">Rather watch it run?</p>
+          <p className="ember-kicker">See a live case</p>
           <h2 className="ember-serif">Open the desk.</h2>
           <Link className="ember-pill" href="/desk" style={{ marginTop: 22 }}>
             Open the desk
           </Link>
           <div className="ember-badges">
-            <span>REAL BOLNA CALL</span>
-            <span>SIMULATED CARRIER</span>
-            <span>NO SHOPIFY</span>
+            <span>REAL PHONE CALL</span>
+            <span>PRACTICE DELIVERY</span>
+            <span>STAYS ON IF YOU LEAVE</span>
           </div>
         </div>
       </section>
@@ -329,7 +320,7 @@ export function EmberLanding() {
           <p className="ember-mark">
             <Cairn /> Rescue
           </p>
-          <p>Always-on recovery for failed deliveries. Every call is a real Bolna execution. Every reattempt in the demo is labeled synthetic.</p>
+          <p>An always-on agent for parcels that did not arrive. The phone call is real. The second try in this demo is practice, and the desk says so.</p>
         </div>
         <div>
           <h3>Product</h3>
@@ -339,18 +330,18 @@ export function EmberLanding() {
           <Link href="/agent">Agent</Link>
         </div>
         <div>
-          <h3>Ledger</h3>
+          <h3>Review</h3>
           <Link href="/approvals">Approvals</Link>
           <Link href="/analytics">ROI</Link>
         </div>
         <div>
           <h3>Status</h3>
-          <p>Worker stays up when this page closes.</p>
+          <p>The agent stays on after you close this page.</p>
         </div>
       </footer>
       <div className="ember-legal">
         <span>© 2026 Delivery Rescue</span>
-        <span>Made for the parcel that did not arrive.</span>
+        <span>For the parcel that did not arrive.</span>
       </div>
     </div>
   )

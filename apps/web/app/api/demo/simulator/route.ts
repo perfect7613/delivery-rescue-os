@@ -2,8 +2,10 @@ import { DemoOrgId } from "@rescue/shared"
 import { encryptSecret } from "@rescue/shared/secrets"
 import { NextResponse } from "next/server"
 import { db } from "../../../../lib/db"
+import { wakeWorker } from "../../../../lib/wake"
 
 export const dynamic = "force-dynamic"
+export const maxDuration = 60
 
 const formValue = (form: FormData, name: string): string => {
   const value = form.get(name)
@@ -17,6 +19,7 @@ export async function POST(request: Request) {
   const sql = db()
   if (fixture === "advance") {
     await sql`select advance_demo(${DemoOrgId}::uuid, ${formValue(form, "ref")}, 'delivered')`
+    wakeWorker()
     return NextResponse.redirect(new URL("/queue", request.url), 303)
   }
   const ref = fixture === "opted_out" ? "DEMOOPT" : "DEMO1499"
@@ -36,5 +39,6 @@ export async function POST(request: Request) {
       ${mask}
     )
   `
+  wakeWorker()
   return NextResponse.redirect(new URL("/queue", request.url), 303)
 }

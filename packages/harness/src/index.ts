@@ -65,27 +65,44 @@ export class Harness extends Context.Service<Harness, { readonly run: Effect.Eff
       const sql = postgres(databaseUrl, { ssl: "require", max: 4 })
       const run = Effect.gen(function* () {
         yield* Effect.logInfo(`rescue worker ${workerId()} is armed`)
-        while (true) {
-          yield* Effect.gen(function* () {
-            const claimed = yield* claim(sql)
-            if (!claimed) {
-              yield* touch(sql, "idle", null)
-              yield* Effect.sleep("400 millis")
-              return
-            }
-            yield* touch(sql, "running", claimed.dedupKey)
-            yield* runClaimed(sql, claimed)
-          }).pipe(
-            Effect.catch((error) =>
-              Effect.logError(`worker tick failed: ${String(error)}`).pipe(Effect.andThen(Effect.sleep("2 seconds"))),
-            ),
-          )
-        }
+        while (true) yield* tick(sql)
       }).pipe(Effect.ensuring(Effect.sync(() => sql.end())))
       return Harness.of({ run })
     }),
   )
 }
+
+const tick = (sql: postgres.Sql) =>
+  Effect.gen(function* () {
+    const claimed = yield* claim(sql)
+    if (!claimed) {
+      yield* touch(sql, "idle", null)
+      yield* Effect.sleep("400 millis")
+      return
+    }
+    yield* touch(sql, "running", claimed.dedupKey)
+    yield* runClaimed(sql, claimed)
+  }).pipe(
+    Effect.catch((error) =>
+      Effect.logError(`worker tick failed: ${String(error)}`).pipe(Effect.andThen(Effect.sleep("2 seconds"))),
+    ),
+  )
+
+/** Runs the same claim loop as the resident worker, then closes its connection. */
+export const processFor = (budgetMs: number) =>
+  Effect.gen(function* () {
+    const databaseUrl = process.env.DATABASE_URL
+    if (!databaseUrl) {
+      yield* Effect.logError("DATABASE_URL is empty. The worker stays resident and retries.")
+      return
+    }
+    const sql = postgres(databaseUrl, { ssl: "require", max: 1, idle_timeout: 5, connect_timeout: 10 })
+    yield* Effect.gen(function* () {
+      yield* Effect.logInfo(`rescue worker ${workerId()} is armed for ${budgetMs}ms`)
+      const deadline = Date.now() + budgetMs
+      while (Date.now() < deadline) yield* tick(sql)
+    }).pipe(Effect.ensuring(Effect.promise(() => sql.end({ timeout: 5 }))))
+  })
 
 const claim = (sql: postgres.Sql) =>
   Effect.tryPromise(async () => {

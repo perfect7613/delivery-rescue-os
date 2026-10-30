@@ -9,7 +9,8 @@ try {
 }
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@rescue/shared"],
+  transpilePackages: ["@rescue/shared", "@rescue/domain", "@rescue/connectors", "@rescue/harness"],
+  outputFileTracingRoot: resolve(process.cwd(), "../.."),
 }
 
 export default nextConfig

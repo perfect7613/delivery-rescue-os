@@ -20,6 +20,10 @@ npm run dev:web
 
 Open http://localhost:3000 and seed the ₹1,499 failure from the queue. The worker picks it up without a Run button.
 
+## Production
+
+The desk and its API routes run on Vercel. Postgres stays on Supabase. Vercel calls `/api/worker` every minute with `CRON_SECRET`, and a finished Bolna call wakes the same loop. `npm run always-on` is that same worker on a machine, with its own `WORKER_ID`.
+
 ## Supabase
 
 Project `delivery-rescue-os` in Mumbai (`ap-south-1`): `https://mstmxyxmsztfgaakwdgg.supabase.co`

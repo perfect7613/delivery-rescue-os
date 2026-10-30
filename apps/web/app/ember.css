@@ -98,7 +98,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 54px 20px 28px;
+  padding: 72px 24px 36px;
   text-align: center;
 }
 
@@ -107,8 +107,8 @@
   align-items: center;
   gap: 8px;
   max-width: calc(100% - 32px);
-  margin-bottom: 28px;
-  padding: 7px 14px 7px 12px;
+  margin: 0 0 40px;
+  padding: 8px 16px 8px 12px;
   border-radius: 999px;
   background: #eceae6;
   color: #3d403c;
@@ -123,18 +123,24 @@
 }
 
 .ember-hero h1 {
-  max-width: 16ch;
-  font-size: clamp(46px, 7.4vw, 78px);
-  line-height: 1.02;
+  max-width: 16em;
+  margin: 0;
+  font-size: clamp(40px, 5.4vw, 68px);
+  font-weight: 400;
+  line-height: 1.18;
   letter-spacing: -0.03em;
 }
 
-.ember-hero p {
-  max-width: 38rem;
-  margin: 22px auto 0;
+.ember-hero > p:not(.ember-chip) {
+  max-width: 36rem;
+  margin: 32px auto 0;
   color: var(--mute);
   font-size: 18px;
-  line-height: 1.55;
+  line-height: 1.65;
+}
+
+.ember-hero > p:not(.ember-chip) + p {
+  margin-top: 16px;
 }
 
 .ember-hero .ember-pill {
