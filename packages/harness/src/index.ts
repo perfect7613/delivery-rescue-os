@@ -78,18 +78,22 @@ const tick = (sql: postgres.Sql) =>
     if (!claimed) {
       yield* touch(sql, "idle", null)
       yield* Effect.sleep("400 millis")
-      return
+      return false
     }
     yield* touch(sql, "running", claimed.dedupKey)
     yield* runClaimed(sql, claimed)
+    return true
   }).pipe(
     Effect.catch((error) =>
-      Effect.logError(`worker tick failed: ${String(error)}`).pipe(Effect.andThen(Effect.sleep("2 seconds"))),
+      Effect.logError(`worker tick failed: ${String(error)}`).pipe(
+        Effect.andThen(Effect.sleep("2 seconds")),
+        Effect.as(false),
+      ),
     ),
   )
 
 /** Runs the same claim loop as the resident worker, then closes its connection. */
-export const processFor = (budgetMs: number) =>
+export const processFor = (budgetMs: number, stopWhenIdle = false) =>
   Effect.gen(function* () {
     const databaseUrl = process.env.DATABASE_URL
     if (!databaseUrl) {
@@ -100,7 +104,13 @@ export const processFor = (budgetMs: number) =>
     yield* Effect.gen(function* () {
       yield* Effect.logInfo(`rescue worker ${workerId()} is armed for ${budgetMs}ms`)
       const deadline = Date.now() + budgetMs
-      while (Date.now() < deadline) yield* tick(sql)
+      let idle = 0
+      while (Date.now() < deadline) {
+        const worked = yield* tick(sql)
+        if (worked) idle = 0
+        else idle += 1
+        if (stopWhenIdle && idle >= 2) return
+      }
     }).pipe(Effect.ensuring(Effect.promise(() => sql.end({ timeout: 5 }))))
   })
 

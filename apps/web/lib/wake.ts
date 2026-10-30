@@ -3,6 +3,6 @@ import { Effect } from "effect"
 import { after } from "next/server"
 
 /** Keep working the queue after the HTTP response, for this one invocation. */
-export const wakeWorker = () => {
-  after(() => Effect.runPromise(processFor(20_000)))
+export const wakeWorker = (budgetMs = 50_000, stopWhenIdle = false) => {
+  after(() => Effect.runPromise(processFor(budgetMs, stopWhenIdle)))
 }

@@ -22,7 +22,7 @@ Open http://localhost:3000 and seed the ₹1,499 failure from the queue. The wor
 
 ## Production
 
-The desk and its API routes run on Vercel. Postgres stays on Supabase. Vercel calls `/api/worker` every minute with `CRON_SECRET`, and a finished Bolna call wakes the same loop. `npm run always-on` is that same worker on a machine, with its own `WORKER_ID`.
+The desk and its API routes run on Vercel. Postgres stays on Supabase. Seeding a case, opening the desk, and a finished Bolna call each wake the worker. Vercel’s free plan also runs it once a day. `npm run always-on` is the same worker on a machine, and that process is what stays up continuously.
 
 ## Supabase
 
