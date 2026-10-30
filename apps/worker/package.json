@@ -1,0 +1,14 @@
+{
+  "name": "@rescue/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx src/main.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rescue/harness": "*",
+    "effect": "^4.1.0"
+  }
+}

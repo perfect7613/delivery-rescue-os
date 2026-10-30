@@ -1,0 +1,16 @@
+{
+  "name": "@rescue/harness",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@rescue/connectors": "*",
+    "@rescue/domain": "*",
+    "@rescue/shared": "*",
+    "effect": "^4.1.0",
+    "postgres": "^3.4.7"
+  }
+}

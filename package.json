@@ -1,0 +1,20 @@
+{
+  "name": "delivery-rescue-os",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w @rescue/web",
+    "dev:worker": "npm run dev -w @rescue/worker",
+    "always-on": "node scripts/always-on.mjs",
+    "test": "npm run test -w @rescue/domain",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "devDependencies": {
+    "effect": "^4.1.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

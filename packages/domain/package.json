@@ -1,0 +1,16 @@
+{
+  "name": "@rescue/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/reduce.ts"
+  },
+  "scripts": {
+    "test": "tsx --test src/reduce.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@rescue/shared": "*"
+  }
+}

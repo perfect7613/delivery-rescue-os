@@ -1,0 +1,851 @@
+.ember {
+  --ink: #111211;
+  --mute: #5c5f5b;
+  --faint: #878a86;
+  --line: rgba(17, 18, 17, 0.1);
+  --bg: #f7f6f2;
+  --card: #fff;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-ember-sans), "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.ember button {
+  cursor: pointer;
+}
+
+.ember-serif {
+  font-family: var(--font-ember-serif), var(--font-ember-news), "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.ember-nav {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  backdrop-filter: blur(16px);
+}
+
+.ember-mark {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.ember-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ember-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 550;
+}
+
+.ember-pill:hover {
+  background: #2a2a2a;
+}
+
+.ember-icon {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: #eceae4;
+  color: #111;
+}
+
+.ember-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  background: var(--bg);
+}
+
+.ember-menu a {
+  font-family: var(--font-ember-serif), var(--font-ember-news), "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 40px;
+  letter-spacing: -0.03em;
+}
+
+.ember-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 54px 20px 28px;
+  text-align: center;
+}
+
+.ember-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: calc(100% - 32px);
+  margin-bottom: 28px;
+  padding: 7px 14px 7px 12px;
+  border-radius: 999px;
+  background: #eceae6;
+  color: #3d403c;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.ember-chip .ember-dot {
+  flex: none;
+}
+
+.ember-hero h1 {
+  max-width: 16ch;
+  font-size: clamp(46px, 7.4vw, 78px);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.ember-hero p {
+  max-width: 38rem;
+  margin: 22px auto 0;
+  color: var(--mute);
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.ember-hero .ember-pill {
+  margin-top: 28px;
+  height: 48px;
+  padding: 0 22px;
+}
+
+.ember-stage {
+  position: relative;
+  width: min(1040px, calc(100% - 32px));
+  height: 460px;
+  margin: 36px auto 0;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(16, 13, 11, 0) 42%, rgba(16, 13, 11, 0.28) 100%),
+    radial-gradient(120% 80% at 70% 20%, #f6d7a4 0%, transparent 46%),
+    linear-gradient(180deg, #8eb4d4 0%, #f3c98a 42%, #e7a15a 68%, #6d4a3a 100%);
+}
+
+.ember-ridge {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 120px;
+  background:
+    radial-gradient(80% 100% at 20% 120%, #3d2a24 40%, transparent 42%),
+    radial-gradient(70% 90% at 55% 130%, #2c211c 46%, transparent 48%),
+    radial-gradient(60% 80% at 88% 120%, #4a342c 40%, transparent 46%);
+}
+
+.ember-live {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #243027;
+  font-size: 14px;
+  backdrop-filter: blur(8px);
+}
+
+.ember-live b {
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+.ember-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: #3dbe6a;
+  box-shadow: 0 0 0 4px rgba(61, 190, 106, 0.18);
+}
+
+.ember-bubble {
+  position: absolute;
+  left: 50%;
+  width: min(460px, calc(100% - 48px));
+  translate: -50% 0;
+  border-radius: 22px;
+  padding: 18px 20px;
+  font-size: 18px;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+}
+
+.ember-bubble.dark {
+  top: 150px;
+  background: #111;
+  color: #f6f4ef;
+}
+
+.ember-bubble.light {
+  top: 292px;
+  background: #fff;
+  color: #171816;
+  box-shadow: 0 18px 40px rgba(40, 24, 10, 0.12);
+}
+
+.ember-bubble span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 8px;
+  border-radius: 99px;
+  vertical-align: 1px;
+}
+
+.ember-bubble.dark span {
+  background: #e25b2a;
+}
+
+.ember-bubble.light span {
+  background: #1f9d72;
+}
+
+.ember-logos {
+  padding: 72px 0 20px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.ember-logos p {
+  color: var(--faint);
+  font-size: 15px;
+}
+
+.ember-marquee {
+  display: flex;
+  gap: 72px;
+  width: max-content;
+  margin-top: 28px;
+  animation: ember-drift 28s linear infinite;
+  color: #b7b5ae;
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+
+@keyframes ember-drift {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes ember-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes ember-bar {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes ember-roll {
+  from { transform: translateY(60%); opacity: 0; filter: blur(4px); }
+  to { transform: none; opacity: 1; filter: none; }
+}
+
+@keyframes ember-drift-bg {
+  from { transform: translate3d(-2%, 0, 0) scale(1.05); }
+  to { transform: translate3d(2%, -2%, 0) scale(1.12); }
+}
+
+@keyframes ember-eq {
+  0%, 100% { transform: scaleY(0.35); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ember-step-bar i,
+  .ember-orb::before,
+  .ember-vista-drift,
+  .ember-dial span,
+  .ember-app-title,
+  .ember-panel {
+    animation: none;
+  }
+
+  .ember-step-bar i {
+    transform: scaleX(1);
+  }
+}
+
+.ember-section {
+  width: min(1040px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 88px 0;
+}
+
+.ember-kicker {
+  color: var(--faint);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.ember-section h2 {
+  max-width: 12ch;
+  margin-top: 10px;
+  font-size: clamp(48px, 6vw, 76px);
+  line-height: 0.96;
+}
+
+.ember-call,
+.ember-quote,
+.ember-cta-card {
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  background: #fff;
+}
+
+.ember-canvas {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 36px;
+  align-items: center;
+}
+
+.ember-canvas-name {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--font-ember-serif), var(--font-ember-news), "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 32px;
+  letter-spacing: -0.03em;
+}
+
+.ember-orb {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--line);
+}
+
+.ember-orb::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: conic-gradient(from 210deg, #ff9a76, #f6c1ff, #8ab4ff, #9ff0d5, #ffd38a, #ff9a76);
+  animation: ember-spin 9s linear infinite;
+}
+
+.ember-orb.is-sm {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ember-orb.is-sm::before {
+  inset: 0;
+}
+
+.ember-steps {
+  margin-top: 28px;
+  padding: 0;
+  list-style: none;
+}
+
+.ember-steps li {
+  position: relative;
+  border-top: 1px solid var(--line);
+}
+
+.ember-steps li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.ember-step-bar {
+  position: absolute;
+  top: -1px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  overflow: hidden;
+}
+
+.ember-step-bar i {
+  display: block;
+  height: 100%;
+  background: #111;
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: ember-bar 5.2s linear forwards;
+}
+
+.ember-steps button {
+  display: flex;
+  width: 100%;
+  align-items: baseline;
+  gap: 12px;
+  padding: 16px 0;
+  background: transparent;
+  color: var(--mute);
+  font-size: 16px;
+  text-align: left;
+}
+
+.ember-steps li.is-on button {
+  color: var(--ink);
+}
+
+.ember-step-num,
+.ember-app-step,
+.ember-chip {
+  font-family: var(--font-ember-mono), "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+
+.ember-step-num {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--faint);
+}
+
+.ember-steps li.is-on .ember-step-num {
+  color: #d9480f;
+}
+
+.ember-step-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ember-step-body > div {
+  overflow: hidden;
+}
+
+.ember-step-body p {
+  max-width: 42ch;
+  padding-bottom: 16px;
+  color: var(--mute);
+  font-size: 14px;
+  line-height: 1.7;
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.ember-steps li.is-on .ember-step-body {
+  grid-template-rows: 1fr;
+}
+
+.ember-steps li.is-on .ember-step-body p {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.4s 0.12s, transform 0.5s 0.12s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ember-vista {
+  position: relative;
+  height: 560px;
+  overflow: hidden;
+  border-radius: 28px;
+  background:
+    linear-gradient(180deg, rgba(16, 13, 11, 0.05), rgba(16, 13, 11, 0.28)),
+    linear-gradient(180deg, #8eb4d4 0%, #f3c98a 46%, #c98455 100%);
+}
+
+.ember-vista-drift {
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(40% 30% at 72% 18%, rgba(255, 236, 196, 0.9), transparent 60%),
+    radial-gradient(50% 40% at 20% 80%, #5c3a2e 0%, transparent 55%);
+  animation: ember-drift-bg 18s ease-in-out infinite alternate;
+}
+
+.ember-app {
+  --ember-i: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(380px, calc(100% - 36px));
+  translate: -50% -50%;
+  border-radius: 16px;
+  background: #fff;
+  color: #171816;
+  box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.55);
+}
+
+.ember-app-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  border-bottom: 1px solid var(--line);
+}
+
+.ember-app-head .ember-orb {
+  position: absolute;
+  left: 16px;
+}
+
+.ember-app-title {
+  font-size: 14px;
+  animation: ember-roll 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ember-app-step {
+  position: absolute;
+  right: 16px;
+  color: var(--faint);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.ember-seg {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 14px 14px 0;
+  padding: 3px;
+  border-radius: 10px;
+  background: #f1f1ef;
+}
+
+.ember-seg::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / 3);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  translate: calc(var(--ember-i) * 100%) 0;
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ember-seg button {
+  position: relative;
+  z-index: 1;
+  height: 32px;
+  background: transparent;
+  color: var(--mute);
+  font-size: 12px;
+}
+
+.ember-seg button[aria-selected="true"] {
+  color: var(--ink);
+  font-weight: 650;
+}
+
+.ember-panel {
+  padding: 16px 16px 18px;
+  animation: ember-roll 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ember-panel > b {
+  display: block;
+  font-size: 13px;
+}
+
+.ember-panel > span {
+  display: block;
+  margin-top: 4px;
+  color: var(--mute);
+  font-size: 12px;
+}
+
+.ember-chip-row,
+.ember-rules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.ember-chip-row span,
+.ember-rules li {
+  border-radius: 999px;
+  background: #f6f5f2;
+  padding: 8px 10px;
+  font-size: 12px;
+}
+
+.ember-rules {
+  flex-direction: column;
+  padding: 0;
+  list-style: none;
+}
+
+.ember-dial {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+  height: 72px;
+  margin-top: 18px;
+}
+
+.ember-dial span {
+  width: 4px;
+  height: 28px;
+  border-radius: 99px;
+  background: #d9480f;
+  transform-origin: center bottom;
+  animation: ember-eq 0.9s ease-in-out infinite;
+}
+
+.ember-dial span:nth-child(2) { animation-delay: 0.15s; height: 40px; }
+.ember-dial span:nth-child(3) { animation-delay: 0.3s; }
+.ember-dial span:nth-child(4) { animation-delay: 0.45s; height: 18px; }
+
+.ember-dial p {
+  margin-left: 8px;
+  color: var(--mute);
+  font-size: 12px;
+}
+
+.ember-sample {
+  margin-top: 18px;
+  width: fit-content;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  padding: 8px 14px;
+  font-size: 13px;
+}
+
+.ember-call {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 0;
+  overflow: hidden;
+}
+
+.ember-thread {
+  padding: 28px;
+}
+
+.ember-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.ember-avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  background: #efe7dc;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ember-person small {
+  display: block;
+  color: var(--faint);
+}
+
+.ember-line {
+  margin-top: 16px;
+}
+
+.ember-line b {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--faint);
+}
+
+.ember-line p {
+  margin-top: 4px;
+}
+
+.ember-side {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 28px;
+  background: #f6f5f2;
+  border-left: 1px solid var(--line);
+}
+
+.ember-side small {
+  letter-spacing: 0.14em;
+  color: var(--faint);
+  font-size: 11px;
+}
+
+.ember-side strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+
+.ember-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.ember-stat small {
+  color: var(--faint);
+  font-size: 12px;
+}
+
+.ember-stat b {
+  display: block;
+  margin: 8px 0 4px;
+  font-family: var(--font-ember-serif), var(--font-ember-news), "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.ember-stat span {
+  color: var(--mute);
+  font-size: 14px;
+}
+
+.ember-quote {
+  padding: 56px 48px;
+}
+
+.ember-quote q {
+  display: block;
+  font-family: var(--font-ember-serif), var(--font-ember-news), "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  font-size: clamp(32px, 4vw, 48px);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  quotes: none;
+}
+
+.ember-quote p {
+  margin-top: 22px;
+  color: var(--mute);
+}
+
+.ember-cta {
+  padding-bottom: 40px;
+}
+
+.ember-cta-card {
+  padding: 48px;
+  background:
+    radial-gradient(600px 220px at 100% 0%, rgba(226, 91, 42, 0.16), transparent 60%),
+    #fff;
+}
+
+.ember-cta-card h2 {
+  max-width: 14ch;
+}
+
+.ember-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+
+.ember-badges span {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 10px;
+  color: var(--mute);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.ember-foot {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: 24px;
+  width: min(1040px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0 28px;
+  border-top: 1px solid var(--line);
+}
+
+.ember-foot h3 {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.ember-foot a,
+.ember-foot p {
+  display: block;
+  margin-top: 8px;
+  color: var(--mute);
+  font-size: 14px;
+}
+
+.ember-legal {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  width: min(1040px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 8px 0 36px;
+  color: var(--faint);
+  font-size: 13px;
+}
+
+@media (max-width: 860px) {
+  .ember-canvas,
+  .ember-call,
+  .ember-stats,
+  .ember-foot {
+    grid-template-columns: 1fr;
+  }
+
+  .ember-vista {
+    height: 460px;
+  }
+
+  .ember-side {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .ember-quote,
+  .ember-cta-card {
+    padding: 28px;
+  }
+}
