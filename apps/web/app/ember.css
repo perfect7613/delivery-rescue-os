@@ -244,32 +244,158 @@
   background: #1f9d72;
 }
 
-.ember-logos {
-  padding: 72px 0 20px;
-  overflow: hidden;
-  text-align: center;
+.ember-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 36px;
 }
 
-.ember-logos p {
+.ember-pill.ghost {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1px rgba(17, 18, 17, 0.18);
+}
+
+.ember-pill.ghost:hover {
+  background: #eceae4;
+}
+
+.ember-problem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: center;
+  margin-top: 48px;
+}
+
+.ember-label {
+  position: relative;
+  padding: 26px 28px 30px;
+  border-radius: 10px;
+  background: #fbfaf6;
+  color: #111211;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04), 0 30px 50px -28px rgba(60, 35, 10, 0.5);
+  transform: rotate(-1.4deg);
+}
+
+.ember-label-wrap {
+  padding: 42px 34px;
+  border-radius: 28px;
+  background: #c49a6c;
+  background-image: radial-gradient(rgba(60, 35, 10, 0.12) 1px, transparent 1px);
+  background-size: 6px 6px;
+}
+
+.ember-label-top {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  border-bottom: 2px solid #111211;
+}
+
+.ember-barcode {
+  height: 54px;
+  width: 190px;
+  background: repeating-linear-gradient(90deg, #111211 0 2px, transparent 2px 4px, #111211 4px 7px, transparent 7px 9px, #111211 9px 10px, transparent 10px 13px);
+}
+
+.ember-mono {
+  font-family: var(--font-ember-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: #5c5f5b;
+}
+
+.ember-label-top b {
+  font-family: var(--font-ember-serif), Georgia, serif;
+  font-size: 54px;
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.ember-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-bottom: 2px solid #111211;
+}
+
+.ember-label-row strong {
+  font-family: var(--font-ember-serif), Georgia, serif;
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.ember-stamp {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 8px 16px 6px;
+  border: 4px solid #d9480f;
+  border-radius: 8px;
+  color: #d9480f;
+  font-family: var(--font-ember-mono), ui-monospace, monospace;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transform: rotate(-5deg);
+  mix-blend-mode: multiply;
+}
+
+.ember-days {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ember-days li {
+  display: grid;
+  grid-template-columns: 132px 1fr;
+  gap: 18px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+}
+
+.ember-days li:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.ember-days small {
+  padding-top: 3px;
   color: var(--faint);
+  font-family: var(--font-ember-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ember-days b {
+  display: block;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.ember-days span {
+  display: block;
+  margin-top: 4px;
+  color: var(--mute);
   font-size: 15px;
 }
 
-.ember-marquee {
-  display: flex;
-  gap: 72px;
-  width: max-content;
-  margin-top: 28px;
-  animation: ember-drift 28s linear infinite;
-  color: #b7b5ae;
-  font-size: 28px;
-  font-weight: 650;
-  letter-spacing: 0.08em;
+.ember-days .is-loss b {
+  color: #b8360a;
 }
 
-@keyframes ember-drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+.ember-fix {
+  margin-top: 28px;
+  color: var(--ink);
+  font-size: 18px;
+  line-height: 1.55;
 }
 
 @keyframes ember-spin {
@@ -834,6 +960,7 @@
 }
 
 @media (max-width: 860px) {
+  .ember-problem,
   .ember-canvas,
   .ember-call,
   .ember-stats,
@@ -853,5 +980,14 @@
   .ember-quote,
   .ember-cta-card {
     padding: 28px;
+  }
+
+  .ember-problem {
+    gap: 32px;
+  }
+
+  .ember-days li {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }

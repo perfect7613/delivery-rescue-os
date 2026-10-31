@@ -14,11 +14,11 @@ const beats = [
   },
   {
     alert: "They said Thursday works.",
-    reply: "I booked another try on the practice carrier. A real shipment is left alone.",
+    reply: "I requested a second attempt for Thursday. A person reviews it if anything is unclear.",
   },
 ]
 
-const marks = ["BOLNA", "SARVAM", "SHIPROCKET", "DEMO CARRIER", "BOLNA", "SARVAM", "SHIPROCKET", "DEMO CARRIER"]
+const GITHUB = "https://github.com/perfect7613/delivery-rescue-os"
 
 const STEP_MS = 5200
 
@@ -27,11 +27,11 @@ const steps = [
     id: "Detect",
     copy: "A parcel did not arrive. The agent notices by itself. You do not press start.",
     title: "It saw the missed delivery",
-    detail: "Order DEMO1499 is waiting. Closing this page does not pause it.",
+    detail: "Order LIVE033368 is waiting. Closing this page does not pause it.",
   },
   {
     id: "Plan",
-    copy: "It decides from the facts already on the case. While it plans, it cannot see the phone number.",
+    copy: "GLM 5.3 decides from the facts already on the case. While it plans, it cannot see the phone number.",
     title: "It picks the next step",
     detail: "Call to find a new day, stay quiet, or hand the case to a person.",
   },
@@ -76,6 +76,9 @@ export function EmberLanding() {
           Rescue
         </Link>
         <div className="ember-actions">
+          <a className="ember-pill ghost" href={GITHUB} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
           <Link className="ember-pill" href="/desk">
             Open the desk
           </Link>
@@ -94,6 +97,7 @@ export function EmberLanding() {
           <Link href="/queue" onClick={() => setOpen(false)}>Queue</Link>
           <Link href="/integrations" onClick={() => setOpen(false)}>Integrations</Link>
           <Link href="/agent" onClick={() => setOpen(false)}>Agent</Link>
+          <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       ) : null}
 
@@ -103,14 +107,19 @@ export function EmberLanding() {
           <br />
           for failed deliveries.
         </h1>
-        <p>The courier could not hand the parcel over. You do not open this page and press start. The agent is already running.</p>
         <p>
-          It phones the customer and asks which day they will be home. The courier is sent again only after they agree.
-          Close the tab. The call still goes out. If they asked not to be called, it never dials.
+          When a cash-on-delivery parcel cannot be handed over, Rescue phones the customer with a Bolna voice agent, asks
+          which day they will be home, and requests a second attempt once they clearly say yes.
         </p>
-        <Link className="ember-pill" href="/desk">
-          Open the desk
-        </Link>
+        <p>It starts on its own and keeps running after you close the tab. Customers who asked not to be called are never dialled.</p>
+        <div className="ember-hero-actions">
+          <Link className="ember-pill" href="/desk">
+            Open the desk
+          </Link>
+          <a className="ember-pill ghost" href={GITHUB} target="_blank" rel="noreferrer">
+            Read the code
+          </a>
+        </div>
         <div className="ember-stage" aria-hidden="true">
           <div className="ember-ridge" />
           <p className="ember-live">
@@ -128,12 +137,55 @@ export function EmberLanding() {
         </div>
       </section>
 
-      <section className="ember-logos">
-        <p>Bolna places the call. Sarvam does the thinking. The practice carrier never touches a real parcel.</p>
-        <div className="ember-marquee">
-          {marks.map((mark, index) => (
-            <span key={`${mark}-${index}`}>{mark}</span>
-          ))}
+      <section className="ember-section">
+        <p className="ember-kicker">The problem</p>
+        <h2 className="ember-serif" style={{ maxWidth: "17ch" }}>A failed delivery usually turns into a return.</h2>
+        <div className="ember-problem">
+          <div className="ember-label-wrap" aria-hidden="true">
+            <div className="ember-label">
+              <div className="ember-label-top">
+                <div>
+                  <div className="ember-barcode" />
+                  <p className="ember-mono" style={{ marginTop: 8 }}>AWB 7712 0448 3368</p>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p className="ember-mono">PAYMENT</p>
+                  <b>COD</b>
+                </div>
+              </div>
+              <div className="ember-label-row">
+                <span className="ember-mono">COLLECT ON DELIVERY</span>
+                <strong>₹1,499</strong>
+              </div>
+              <span className="ember-stamp">DELIVERY FAILED</span>
+            </div>
+          </div>
+          <div>
+            <ol className="ember-days">
+              <li>
+                <small>Day 1</small>
+                <div>
+                  <b>The courier marks it undelivered</b>
+                  <span>Nobody was home, or the customer could not pay in cash at that moment.</span>
+                </div>
+              </li>
+              <li>
+                <small>The next days</small>
+                <div>
+                  <b>Nobody calls the customer in time</b>
+                  <span>The order waits in a failed-delivery queue while the reattempt window closes.</span>
+                </div>
+              </li>
+              <li className="is-loss">
+                <small>About a week later</small>
+                <div>
+                  <b>The parcel goes back to the seller</b>
+                  <span>The seller pays shipping both ways and the sale is lost.</span>
+                </div>
+              </li>
+            </ol>
+            <p className="ember-fix">Many of these customers still want the parcel. A phone call on the first day gives them a chance to pick a day that works, before the return starts.</p>
+          </div>
         </div>
       </section>
 
@@ -197,7 +249,7 @@ export function EmberLanding() {
                 <span>{active?.detail}</span>
                 {step === 0 ? (
                   <div className="ember-chip-row">
-                    <span>DEMO1499</span>
+                    <span>LIVE033368</span>
                     <span>Not delivered</span>
                     <span>₹1,499 cash on delivery</span>
                   </div>
@@ -231,24 +283,28 @@ export function EmberLanding() {
               <div className="ember-avatar">PS</div>
               <div>
                 <b>Priya Shah</b>
-                <small>Cash on delivery · customer called Rescue</small>
+                <small>Cash on delivery · Rescue called after a failed attempt</small>
               </div>
             </div>
             <div className="ember-line">
               <b>PRIYA</b>
-              <p>Hello? The parcel was supposed to come yesterday and nobody knocked.</p>
+              <p>Hello?</p>
             </div>
             <div className="ember-line">
               <b>RESCUE</b>
-              <p>I can see yesterday&apos;s missed delivery, order DEMO1499. Thursday is open. Should we try again then?</p>
+              <p>Hi, I&apos;m Asha, an AI assistant from Rescue, calling about a delivery that couldn&apos;t be completed. Would you still like to receive the parcel?</p>
             </div>
             <div className="ember-line">
               <b>PRIYA</b>
-              <p>Thursday is fine. I&apos;ll be home after four.</p>
+              <p>Yes. Thursday works, I&apos;ll be home after four.</p>
             </div>
             <div className="ember-line">
               <b>RESCUE</b>
-              <p>Booked. This second try is practice only. It does not change a real shipment.</p>
+              <p>So you can receive it on Thursday, is that right?</p>
+            </div>
+            <div className="ember-line">
+              <b>PRIYA</b>
+              <p>Yes.</p>
             </div>
           </div>
           <aside className="ember-side">
@@ -259,8 +315,8 @@ export function EmberLanding() {
             </div>
             <div>
               <small>WHAT THEY SAID</small>
-              <strong>Thursday works</strong>
-              <p>Another try can be today, or any of the next three days</p>
+              <strong>Thursday, after four</strong>
+              <p>Confirmed after the read-back. The time is a preference, not a promise.</p>
             </div>
           </aside>
         </div>
@@ -281,14 +337,14 @@ export function EmberLanding() {
             <span>One agent, many parcels, still on if you close the page.</span>
           </div>
           <div className="ember-stat">
-            <small>Real shipments changed</small>
+            <small>Calls to opted-out customers</small>
             <b>0</b>
-            <span>In this demo the second try is practice. Shiprocket is look-only.</span>
+            <span>Consent is checked before every dial.</span>
           </div>
           <div className="ember-stat">
             <small>Phone calls first</small>
             <b>1</b>
-            <span>Bolna finishes the call, then another try gets booked.</span>
+            <span>The customer confirms a day before any reattempt is requested.</span>
           </div>
         </div>
       </section>
@@ -296,7 +352,7 @@ export function EmberLanding() {
       <section className="ember-section" style={{ paddingTop: 0 }}>
         <div className="ember-quote">
           <q>Close the page if you want. The agent keeps the parcel until it is delivered, or until a person has to take over.</q>
-          <p>The phone call is real. The second delivery in this demo does not change a real shipment.</p>
+          <p>Every call keeps its transcript, recording, summary and cost on the case.</p>
         </div>
       </section>
 
@@ -307,9 +363,14 @@ export function EmberLanding() {
           <Link className="ember-pill" href="/desk" style={{ marginTop: 22 }}>
             Open the desk
           </Link>
+          <div className="ember-hero-actions" style={{ justifyContent: "flex-start", marginTop: 14 }}>
+            <a className="ember-pill ghost" href={GITHUB} target="_blank" rel="noreferrer">
+              Read the code on GitHub
+            </a>
+          </div>
           <div className="ember-badges">
-            <span>REAL PHONE CALL</span>
-            <span>PRACTICE DELIVERY</span>
+            <span>REAL PHONE CALLS VIA BOLNA</span>
+            <span>GLM 5.3 PLANNING</span>
             <span>STAYS ON IF YOU LEAVE</span>
           </div>
         </div>
@@ -320,7 +381,7 @@ export function EmberLanding() {
           <p className="ember-mark">
             <Cairn /> Rescue
           </p>
-          <p>An always-on agent for parcels that did not arrive. The phone call is real. The second try in this demo is practice, and the desk says so.</p>
+          <p>An always-on agent for cash-on-delivery parcels that did not arrive. It calls the customer, confirms a new day, and keeps a record of every step.</p>
         </div>
         <div>
           <h3>Product</h3>
@@ -332,7 +393,8 @@ export function EmberLanding() {
         <div>
           <h3>Review</h3>
           <Link href="/approvals">Approvals</Link>
-          <Link href="/analytics">ROI</Link>
+          <Link href="/analytics">Outcomes</Link>
+          <a href={GITHUB} target="_blank" rel="noreferrer">GitHub</a>
         </div>
         <div>
           <h3>Status</h3>
