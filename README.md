@@ -6,6 +6,10 @@ When a courier fails to hand over a parcel in India, the order usually sits in a
 
 > Rescue runs on its own. Nobody presses a Run button. Closing the dashboard does not stop the worker.
 
+**Built with:** [Bolna](https://www.bolna.ai) for the outbound voice agent · GLM 5.3 for planning · Supabase Postgres as the durable ledger · Next.js on Vercel · [Effect](https://effect.website) for the worker.
+
+**Live desk:** https://delivery-rescue-os.vercel.app
+
 ---
 
 ## How a case moves
@@ -13,7 +17,7 @@ When a courier fails to hand over a parcel in India, the order usually sits in a
 ```
 Detected ──▶ Plan ──▶ Call ──▶ Review ──▶ Rebook ──▶ Outcome
    │          │        │         │           │          │
- carrier    Sarvam   Bolna    policy or    carrier   verified
+ carrier   GLM 5.3   Bolna    policy or    carrier   verified
   NDR      proposes  voice    a person    reattempt  delivery
            next step  call    approves    requested  or return
 ```
@@ -21,7 +25,7 @@ Detected ──▶ Plan ──▶ Call ──▶ Review ──▶ Rebook ──�
 | Stage | What happens |
 | --- | --- |
 | **Detected** | A carrier event (NDR) is deduplicated in `event_inbox` and opens a recovery case. |
-| **Plan** | Sarvam proposes the next step: call, stay silent, or hand to a person. It sees only the facts on the case and never sees the phone number. A policy layer accepts or rejects each proposal, and both outcomes are logged in `agent_decisions`. |
+| **Plan** | GLM 5.3 (`glm5.3-flash`, served through Sarvam's API) proposes the next step: call, stay silent, or hand to a person. It sees only the facts on the case and never sees the phone number. A policy layer accepts or rejects each proposal, and both outcomes are logged in `agent_decisions`. |
 | **Call** | Bolna places one outbound call. The voice agent (Asha) asks whether the customer still wants the parcel, reads the chosen day back, and asks for an explicit yes. It never claims a booking was made. |
 | **Review** | Unclear calls, timeouts, refusals or failed actions go to `HumanReview` with a reason. Approval policy is `auto`, `require_human` or `deny` per connector. |
 | **Rebook** | The confirmed day is stored in case memory, and a reattempt is submitted through the carrier connector. A receipt is recorded. |
@@ -38,7 +42,7 @@ apps/
 packages/
   domain/     Pure reducer: (case, event) → phase + row writes. Unit-tested.
   harness/    Claim loop, leases, retries, planner/call/submit jobs
-  connectors/ Sarvam planner, Bolna calls & execution reads, connector registry
+  connectors/ GLM 5.3 planner (via Sarvam), Bolna calls & execution reads, connector registry
   shared/     Event and proposal schemas, credential encryption
 supabase/
   migrations/ Ledger schema, job claiming, public views
@@ -67,7 +71,7 @@ scripts/
 
 ## Getting started
 
-**Requirements:** Node 22+, a Supabase project, a Bolna account with an agent, and a Sarvam API key.
+**Requirements:** Node 22+, a Supabase project, a Bolna account with an agent, and a Sarvam API key (for GLM 5.3).
 
 ```bash
 npm install
@@ -84,7 +88,7 @@ Fill in `.env`:
 | `BOLNA_API_KEY`, `BOLNA_AGENT_ID` | Your Bolna credentials and agent |
 | `BOLNA_WEBHOOK_SECRET` | Checked against the `x-bolna-secret` header on webhook calls |
 | `BOLNA_TEST_PHONE` | Number dialled for seeded cases |
-| `SARVAM_API_KEY`, `SARVAM_BASE_URL` | Planner model |
+| `SARVAM_API_KEY`, `SARVAM_BASE_URL` | Access to the GLM 5.3 planner (`glm5.3-flash`) |
 | `DEMO_SIMULATOR` | Set to `0` to disable the simulator carrier routes |
 
 Apply the migrations in `supabase/migrations/` in order. Then configure the voice agent and start both processes:
