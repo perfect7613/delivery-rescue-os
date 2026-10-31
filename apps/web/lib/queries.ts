@@ -41,11 +41,28 @@ export async function queue() {
   `
 }
 
+export async function closedShipments() {
+  return db()`
+    select s.id as shipment_id, s.ref, s.cod_amount_paise, s.current_carrier_status,
+           c.id, c.phase, c.updated_at
+    from recovery_cases c
+    join shipments s on s.id = c.shipment_id
+    where not c.open
+    order by c.updated_at desc
+    limit 50
+  `
+}
+
 export async function shipment(id: string) {
   const sql = db()
   const rows = await sql`select * from shipments_public where id = ${id}::uuid`
   const events = await sql`
-    select dedup_key, kind, created_at from shipment_events where shipment_id = ${id}::uuid order by created_at
+    select id, dedup_key, payload->>'_tag' as kind, source, apply_status, created_at
+    from event_inbox where shipment_id = ${id}::uuid order by created_at, id
+  `
+  const cases = await sql`
+    select id, phase, review_reason, open, version, updated_at
+    from recovery_cases where shipment_id = ${id}::uuid order by updated_at desc
   `
   const decisions = await sql`
     select d.proposal_tag, d.policy_tag, d.reason, d.evidence_ids, d.created_at
@@ -55,7 +72,8 @@ export async function shipment(id: string) {
     order by d.created_at
   `
   const calls = await sql`
-    select v.status, v.execution_id, v.duration_ms, v.cost_paise, v.transcript, v.extraction
+    select v.id, v.status, v.execution_id, v.duration_ms, v.cost_paise, v.transcript, v.extraction,
+           v.provider_details, v.synced_at
     from voice_calls v
     join recovery_cases c on c.id = v.case_id
     where c.shipment_id = ${id}::uuid
@@ -65,7 +83,27 @@ export async function shipment(id: string) {
     join recovery_cases c on c.id = o.case_id
     where c.shipment_id = ${id}::uuid
   `
-  return { shipment: rows[0] ?? null, events, decisions, calls, outcomes }
+  const actions = await sql`
+    select a.id, a.status, a.created_at, r.created_at as submitted_at, m.reattempt_day
+    from action_approvals a
+    join recovery_cases c on c.id = a.case_id
+    left join lateral (
+      select created_at from action_receipts where case_id = c.id order by created_at desc limit 1
+    ) r on true
+    left join lateral (
+      select reattempt_day from case_memory where case_id = c.id order by created_at desc limit 1
+    ) m on true
+    where c.shipment_id = ${id}::uuid order by a.created_at
+  `
+  const jobs = await sql`
+    select j.id, j.payload->>'_tag' as kind, j.status, j.attempt_count, j.max_attempts,
+           j.next_run_at, j.updated_at, j.resolution
+    from workflow_jobs j
+    where j.payload->>'caseId' in (select id::text from recovery_cases where shipment_id = ${id}::uuid)
+       or j.payload->>'inboxId' in (select id::text from event_inbox where shipment_id = ${id}::uuid)
+    order by j.updated_at desc
+  `
+  return { shipment: rows[0] ?? null, cases, events, decisions, calls, outcomes, actions, jobs }
 }
 
 export async function connections() {

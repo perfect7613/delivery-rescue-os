@@ -5,38 +5,50 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Dispatch ledger: Ember's paper and ink, one signal colour for "a person is needed". */
+  --paper: #f7f6f2;
+  --paper-deep: #efede6;
+  --ink: #111211;
+  --mute: #5c5f5b;
+  --faint: #878a86;
+  --rule: rgba(17, 18, 17, 0.1);
+  --signal: #d9480f;
+  --signal-soft: #fbe9df;
+  --live: #2f9e5b;
+  --live-soft: #e3f3e8;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: #ffffff;
+  --card-foreground: var(--ink);
+  --popover: #ffffff;
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper-deep);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-deep);
+  --muted-foreground: var(--mute);
+  --accent: var(--paper-deep);
+  --accent-foreground: var(--ink);
+  --destructive: var(--signal);
+  --border: var(--rule);
+  --input: rgba(17, 18, 17, 0.16);
+  --ring: rgba(17, 18, 17, 0.4);
+  --chart-1: var(--ink);
+  --chart-2: var(--faint);
+  --chart-3: var(--signal);
+  --chart-4: var(--live);
+  --chart-5: var(--mute);
+  --radius: 0.75rem;
+  --sidebar: #141513;
+  --sidebar-foreground: #e9e7e1;
+  --sidebar-primary: var(--signal);
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(255, 255, 255, 0.07);
+  --sidebar-accent-foreground: #ffffff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: rgba(255, 255, 255, 0.3);
 }
 
 a {
@@ -45,8 +57,19 @@ a {
 }
 
 @theme inline {
-  --font-heading: var(--font-sans);
+  --font-heading: var(--font-serif);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
   --font-sans: var(--font-sans);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-faint: var(--faint);
+  --color-signal: var(--signal);
+  --color-signal-soft: var(--signal-soft);
+  --color-live: var(--live);
+  --color-live-soft: var(--live-soft);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -87,48 +110,213 @@ a {
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--signal) 22%, transparent);
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* ---------- Desk primitives ---------- */
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.numeral {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.ledger-ref {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.panel {
+  position: relative;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 0 0 1px var(--rule), 0 1px 2px rgba(17, 18, 17, 0.04);
+}
+
+.paper-grain {
+  background-image:
+    radial-gradient(1200px 400px at 85% -10%, rgba(217, 72, 15, 0.05), transparent 60%),
+    radial-gradient(rgba(17, 18, 17, 0.035) 1px, transparent 1px);
+  background-size: auto, 22px 22px;
+}
+
+.lamp {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  flex: none;
+  border-radius: 99px;
+  background: var(--faint);
+}
+
+.lamp[data-on="true"] {
+  background: var(--live);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--live) 22%, transparent);
+}
+
+.lamp[data-on="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--live);
+  animation: lamp-ping 2.4s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+@keyframes lamp-ping {
+  0% { transform: scale(1); opacity: 0.55; }
+  80%, 100% { transform: scale(3.2); opacity: 0; }
+}
+
+.rise {
+  animation: rise 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Route line: a case drawn as a transit line through its stops. */
+.route {
+  --stop: 10px;
+  display: grid;
+  grid-template-columns: repeat(var(--stops), minmax(0, 1fr));
+  align-items: start;
+}
+
+.route-stop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.route-stop::before {
+  content: "";
+  position: absolute;
+  top: calc(var(--stop) / 2 - 1px);
+  left: -50%;
+  right: 50%;
+  height: 2px;
+  background: var(--rule);
+}
+
+.route-stop:first-child::before {
+  display: none;
+}
+
+.route-stop[data-state="done"]::before,
+.route-stop[data-state="here"]::before {
+  background: var(--ink);
+}
+
+.route-dot {
+  position: relative;
+  z-index: 1;
+  width: var(--stop);
+  height: var(--stop);
+  border-radius: 99px;
+  background: #fff;
+  box-shadow: inset 0 0 0 2px var(--rule);
+}
+
+.route-stop[data-state="done"] .route-dot {
+  background: var(--ink);
+  box-shadow: none;
+}
+
+.route-stop[data-state="here"] .route-dot {
+  background: var(--paper);
+  box-shadow: inset 0 0 0 2.5px var(--ink), 0 0 0 4px color-mix(in srgb, var(--ink) 10%, transparent);
+}
+
+.route[data-tone="signal"] .route-stop[data-state="here"] .route-dot {
+  box-shadow: inset 0 0 0 2.5px var(--signal), 0 0 0 4px color-mix(in srgb, var(--signal) 18%, transparent);
+}
+
+.route[data-tone="signal"] .route-stop[data-state="here"]::before {
+  background: linear-gradient(90deg, var(--ink), var(--signal));
+}
+
+.route[data-tone="live"] .route-stop .route-dot,
+.route[data-tone="live"] .route-stop::before {
+  background: var(--live);
+  box-shadow: none;
+}
+
+.route[data-tone="quiet"] .route-stop:last-child .route-dot {
+  background: var(--faint);
+  box-shadow: none;
+}
+
+.route-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.route-stop[data-state="here"] .route-name {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.route[data-tone="signal"] .route-stop[data-state="here"] .route-name {
+  color: var(--signal);
+}
+
+@media (max-width: 480px) {
+  .route-name {
+    font-size: 8.5px;
+    letter-spacing: 0.03em;
+  }
+}
+
+.route[data-size="sm"] {
+  --stop: 8px;
+}
+
+.route[data-size="sm"] .route-name {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .lamp[data-on="true"]::after {
+    animation: none;
   }
 }
