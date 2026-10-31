@@ -9,7 +9,7 @@
     "dev:web": "npm run dev -w @rescue/web",
     "dev:worker": "npm run dev -w @rescue/worker",
     "always-on": "node scripts/always-on.mjs",
-    "test": "npm run test -w @rescue/domain",
+    "test": "npm run test -w @rescue/domain && npm run test -w @rescue/connectors",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
   "devDependencies": {

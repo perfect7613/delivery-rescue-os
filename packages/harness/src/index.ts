@@ -47,6 +47,16 @@ const todayIst = (): string => new Intl.DateTimeFormat("en-CA", { timeZone: "Asi
 
 const workerId = (): string => process.env.WORKER_ID || "rescue-worker-1"
 
+const tagged = (error: unknown): string | null => {
+  if (typeof error === "object" && error !== null && "_tag" in error && typeof error._tag === "string") return error._tag
+  return null
+}
+
+const errorText = (error: unknown): string => {
+  const message = error instanceof Error ? error.message : String(error)
+  return message.replace(/Bearer\s+\S+/gi, "Bearer •").slice(0, 300)
+}
+
 export class Harness extends Context.Service<Harness, { readonly run: Effect.Effect<void> }>()("delivery-rescue/Harness") {
   static readonly layer = Layer.effect(
     Harness,
@@ -171,16 +181,19 @@ const runClaimed = (sql: postgres.Sql, job: Claimed) =>
     )
     if (exit._tag === "Success") return
     const reason = Cause.squash(exit.cause)
-    if (reason instanceof LeaseLost) {
+    const tag = tagged(reason)
+    if (tag === "LeaseLost") {
       yield* Effect.logWarning(`lease lost on ${job.dedupKey}`)
       return
     }
-    if (reason instanceof NotReady) return
-    if (reason instanceof MissingCredential) {
-      yield* Effect.logInfo(`waiting on ${reason.name}`)
+    if (tag === "NotReady") return
+    if (tag === "MissingCredential") {
+      const name = typeof reason === "object" && reason !== null && "name" in reason ? String(reason.name) : "credential"
+      yield* Effect.logInfo(`waiting on ${name}`)
       yield* releaseWaiting(sql, job.id)
       return
     }
+    yield* Effect.logError(`job ${job.dedupKey} failed: ${errorText(reason)}`)
     yield* releaseFailed(sql, job)
   })
 
@@ -226,7 +239,7 @@ const plan = (sql: postgres.Sql, job: Claimed) =>
   }).pipe(
     Effect.catch((error) =>
       Effect.gen(function* () {
-        if (!(error instanceof MissingCredential) && job.payload._tag === "Plan") {
+        if (tagged(error) !== "MissingCredential" && job.payload._tag === "Plan") {
           const snapshot = yield* loadByCase(sql, job.payload.caseId)
           yield* accept(sql, {
             orgId: job.orgId,
@@ -308,11 +321,35 @@ const poll = (sql: postgres.Sql, job: Claimed) =>
       `,
     )
     const deadline = wait[0]?.deadline_at
-    const completed = yield* readBolnaExecution(executionId).pipe(
-      Effect.catch((error) => (error instanceof NotReady ? Effect.succeed(null) : Effect.fail(error))),
+    const read = yield* readBolnaExecution(executionId).pipe(
+      Effect.catch((error) => (tagged(error) === "NotReady" ? Effect.succeed({ _tag: "Pending" as const }) : Effect.fail(error))),
     )
+    if ("details" in read && read.details) {
+      const details = read.details
+      yield* Effect.tryPromise(() => sql`
+        update voice_calls
+        set provider_details = ${sql.json(details as unknown as postgres.JSONValue)}, synced_at = now(),
+            transcript = case when ${read._tag === "Completed"} then ${read._tag === "Completed" ? read.call.transcript : null} else transcript end
+        where execution_id = ${executionId}
+      `)
+    }
     const shipmentId = yield* shipmentForCase(sql, caseId)
-    if (!completed) {
+    if (read._tag === "Ended") {
+      yield* accept(sql, {
+        orgId: job.orgId,
+        dedupKey: mintDedup(`bolna:${executionId}:timeout`),
+        source: "bolna",
+        shipmentId,
+        payload: {
+          _tag: "CallTimedOut",
+          dedupKey: mintDedup(`bolna:${executionId}:timeout`),
+          executionId,
+        },
+      })
+      yield* succeed(sql, job.id)
+      return
+    }
+    if (read._tag === "Pending") {
       if (deadline && deadline.getTime() < Date.now()) {
         yield* accept(sql, {
           orgId: job.orgId,
@@ -345,7 +382,7 @@ const poll = (sql: postgres.Sql, job: Claimed) =>
       dedupKey: key,
       source: "bolna",
       shipmentId,
-      payload: { _tag: "CallFinalized", dedupKey: key, ...completed, executionId },
+      payload: { _tag: "CallFinalized", dedupKey: key, ...read.call, executionId },
     })
     yield* succeed(sql, job.id)
   })
@@ -884,8 +921,9 @@ const phaseFrom = (phase: string, reason: string | null): OpenPhase => {
 export const wakePoll = (sql: postgres.Sql, executionId: string) =>
   sql`
     update workflow_jobs
-    set next_run_at = now()
-    where dedup_key = ${`poll:${executionId}`} and status = 'pending'
+    set next_run_at = now(), status = 'pending', attempt_count = 0,
+        claimed_by = null, lease_expires_at = null, resolution = null
+    where dedup_key = ${`poll:${executionId}`} and status in ('pending', 'succeeded')
   `
 
 export const WorkerLive = Layer.effectDiscard(

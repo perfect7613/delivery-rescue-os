@@ -6,6 +6,10 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "scripts": {
+    "test": "node --import tsx --test src/index.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@rescue/shared": "*",
     "effect": "^4.1.0"
